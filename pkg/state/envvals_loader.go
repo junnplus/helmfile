@@ -68,11 +68,11 @@ func (ld *EnvironmentValuesLoader) LoadEnvironmentValues(missingFileHandler *str
 				r := tmpl.NewFileRenderer(ld.fs, filepath.Dir(f), tmplData)
 				bytes, err := r.RenderToBytes(f)
 				if err != nil {
-					return nil, fmt.Errorf("failed to load environment values file \"%s\": %v", f, err)
+					return nil, fmt.Errorf("failed to load environment values file %q: %v", f, err)
 				}
 				m := map[string]interface{}{}
 				if err := yaml.Unmarshal(bytes, &m); err != nil {
-					return nil, fmt.Errorf("failed to load environment values file \"%s\": %v\n\nOffending YAML:\n%s", f, err, bytes)
+					return nil, fmt.Errorf("failed to load environment values file %q: %v\n\nOffending YAML:\n%s", f, err, bytes)
 				}
 				maps = append(maps, m)
 				if ld.logger != nil {

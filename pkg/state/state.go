@@ -2735,7 +2735,7 @@ func (st *HelmState) generateTemporaryReleaseValuesFiles(release *ReleaseSpec, v
 
 			yamlBytes, err := st.RenderReleaseValuesFileToBytes(release, path)
 			if err != nil {
-				return generatedFiles, fmt.Errorf("failed to render values files \"%s\": %v", typedValue, err)
+				return generatedFiles, fmt.Errorf("failed to render values files %q: %v", typedValue, err)
 			}
 
 			valfile, err := createTempValuesFile(release, yamlBytes)
@@ -3258,7 +3258,7 @@ func (st *HelmState) LoadYAMLForEmbedding(release *ReleaseSpec, entries []interf
 
 			yamlBytes, err := st.RenderReleaseValuesFileToBytes(release, yamlOrTemplatePath)
 			if err != nil {
-				return nil, fmt.Errorf("failed to render values files \"%s\": %v", t, err)
+				return nil, fmt.Errorf("failed to render values files %q: %v", t, err)
 			}
 
 			if err := yaml.Unmarshal(yamlBytes, &values); err != nil {

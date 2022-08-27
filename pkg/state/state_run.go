@@ -86,7 +86,7 @@ func (st *HelmState) iterateOnReleases(helm helmexec.Interface, concurrency int,
 			for range inputs {
 				r := <-results
 				if r.err != nil {
-					errs = append(errs, fmt.Errorf("release \"%s\" failed: %v", r.release.Name, r.err))
+					errs = append(errs, fmt.Errorf("release %q failed: %v", r.release.Name, r.err))
 				}
 			}
 		},

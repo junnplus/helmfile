@@ -103,7 +103,7 @@ func (bus *Bus) Trigger(evt string, evtErr error, context map[string]interface{}
 		}
 		render := tmpl.NewTextRenderer(bus.Fs, bus.BasePath, data)
 
-		bus.Logger.Debugf("hook[%s]: triggered by event \"%s\"\n", name, evt)
+		bus.Logger.Debugf("hook[%s]: triggered by event %q\n", name, evt)
 
 		command, err := render.RenderTemplateText(hook.Command)
 		if err != nil {

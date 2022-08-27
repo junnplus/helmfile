@@ -113,12 +113,12 @@ func (st *HelmState) ExecuteTemplates() (*HelmState, error) {
 			renderer := tmpl.NewFileRenderer(st.fs, st.basePath, tmplData)
 			r, err := release.ExecuteTemplateExpressions(renderer)
 			if err != nil {
-				return nil, fmt.Errorf("failed executing templates in release \"%s\".\"%s\": %v", st.FilePath, release.Name, err)
+				return nil, fmt.Errorf("failed executing templates in release %q.%q: %v", st.FilePath, release.Name, err)
 			}
 			if reflect.DeepEqual(prev, r) {
 				successFlag = true
 				if err := updateBoolTemplatedValues(r); err != nil {
-					return nil, fmt.Errorf("failed executing templates in release \"%s\".\"%s\": %v", st.FilePath, release.Name, err)
+					return nil, fmt.Errorf("failed executing templates in release %q.%q: %v", st.FilePath, release.Name, err)
 				}
 				st.Releases[i] = *r
 				break
@@ -126,7 +126,7 @@ func (st *HelmState) ExecuteTemplates() (*HelmState, error) {
 			prev = r
 		}
 		if !successFlag {
-			return nil, fmt.Errorf("failed executing templates in release \"%s\".\"%s\": %s", st.FilePath, release.Name,
+			return nil, fmt.Errorf("failed executing templates in release %q.%q: %s", st.FilePath, release.Name,
 				"recursive references can't be resolved")
 		}
 	}

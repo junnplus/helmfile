@@ -111,7 +111,7 @@ func (c *Context) EnvExec(envs map[string]interface{}, command string, args []in
 		case string:
 			strArgs[i] = fmt.Sprintf("%v", a)
 		default:
-			return "", fmt.Errorf("unexpected type of arg \"%s\" in args %v at index %d", reflect.TypeOf(a), args, i)
+			return "", fmt.Errorf("unexpected type of arg %q in args %v at index %d", reflect.TypeOf(a), args, i)
 		}
 	}
 
@@ -123,7 +123,7 @@ func (c *Context) EnvExec(envs map[string]interface{}, command string, args []in
 		case string:
 			strEnvs[k] = fmt.Sprintf("%v", v)
 		default:
-			return "", fmt.Errorf("unexpected type of env \"%s\" in envs %v at index %s", reflect.TypeOf(v), envs, k)
+			return "", fmt.Errorf("unexpected type of env %q in envs %v at index %s", reflect.TypeOf(v), envs, k)
 		}
 	}
 
@@ -156,7 +156,7 @@ func (c *Context) EnvExec(envs map[string]interface{}, command string, args []in
 			for {
 				n, err := io.WriteString(stdin, input[i:])
 				if err != nil {
-					return fmt.Errorf("failed while writing %d bytes to stdin of \"%s\": %v", len(input), command, err)
+					return fmt.Errorf("failed while writing %d bytes to stdin of %q: %v", len(input), command, err)
 				}
 
 				i += n
@@ -307,24 +307,24 @@ func SetValueAtPath(path string, value interface{}, values Values) (Values, erro
 		case map[string]interface{}:
 			v, exists := typedCurrent[k]
 			if !exists {
-				return nil, fmt.Errorf("failed to set value at path \"%s\": value for key \"%s\" does not exist", path, k)
+				return nil, fmt.Errorf("failed to set value at path %q: value for key %q does not exist", path, k)
 			}
 			elem = v
 		case map[interface{}]interface{}:
 			v, exists := typedCurrent[k]
 			if !exists {
-				return nil, fmt.Errorf("failed to set value at path \"%s\": value for key \"%s\" does not exist", path, k)
+				return nil, fmt.Errorf("failed to set value at path %q: value for key %q does not exist", path, k)
 			}
 			elem = v
 		default:
-			return nil, fmt.Errorf("failed to set value at path \"%s\": value for key \"%s\" was not a map", path, k)
+			return nil, fmt.Errorf("failed to set value at path %q: value for key %q was not a map", path, k)
 		}
 
 		switch typedElem := elem.(type) {
 		case map[string]interface{}, map[interface{}]interface{}:
 			current = typedElem
 		default:
-			return nil, fmt.Errorf("failed to set value at path \"%s\": value for key \"%s\" was not a map", path, k)
+			return nil, fmt.Errorf("failed to set value at path %q: value for key %q was not a map", path, k)
 		}
 	}
 
@@ -334,7 +334,7 @@ func SetValueAtPath(path string, value interface{}, values Values) (Values, erro
 	case map[interface{}]interface{}:
 		typedCurrent[key] = value
 	default:
-		return nil, fmt.Errorf("failed to set value at path \"%s\": value for key \"%s\" was not a map", path, key)
+		return nil, fmt.Errorf("failed to set value at path %q: value for key %q was not a map", path, key)
 	}
 	return values, nil
 }

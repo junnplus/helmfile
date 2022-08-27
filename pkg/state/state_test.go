@@ -776,7 +776,7 @@ func Test_isLocalChart(t *testing.T) {
 		tt := tests[i]
 		t.Run(tt.name, func(t *testing.T) {
 			if got := isLocalChart(tt.args.chart); got != tt.want {
-				t.Errorf("%s(\"%s\") isLocalChart(): got %v, want %v", tt.name, tt.args.chart, got, tt.want)
+				t.Errorf("%s(%q) isLocalChart(): got %v, want %v", tt.name, tt.args.chart, got, tt.want)
 			}
 		})
 	}

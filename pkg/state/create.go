@@ -235,7 +235,7 @@ func (c *StateCreator) loadEnvValues(st *HelmState, name string, failOnMissingEn
 			}
 		}
 	} else if ctxEnv == nil && name != DefaultEnv && failOnMissingEnv {
-		return nil, &UndefinedEnvError{msg: fmt.Sprintf("environment \"%s\" is not defined", name)}
+		return nil, &UndefinedEnvError{msg: fmt.Sprintf("environment %q is not defined", name)}
 	}
 
 	newEnv := &environment.Environment{Name: name, Values: envVals}
@@ -244,7 +244,7 @@ func (c *StateCreator) loadEnvValues(st *HelmState, name string, failOnMissingEn
 		intEnv := *ctxEnv
 
 		if err := mergo.Merge(&intEnv, newEnv, mergo.WithOverride, mergo.WithOverwriteWithEmptyValue); err != nil {
-			return nil, fmt.Errorf("error while merging environment values for \"%s\": %v", name, err)
+			return nil, fmt.Errorf("error while merging environment values for %q: %v", name, err)
 		}
 
 		newEnv = &intEnv
@@ -299,12 +299,12 @@ func (c *StateCreator) scatterGatherEnvSecretFiles(st *HelmState, envSecretFiles
 				}()
 				bytes, err := c.fs.ReadFile(decFile)
 				if err != nil {
-					results <- secretResult{secret.id, nil, fmt.Errorf("failed to load environment secrets file \"%s\": %v", secret.path, err), secret.path}
+					results <- secretResult{secret.id, nil, fmt.Errorf("failed to load environment secrets file %q: %v", secret.path, err), secret.path}
 					continue
 				}
 				m := map[string]interface{}{}
 				if err := yaml.Unmarshal(bytes, &m); err != nil {
-					results <- secretResult{secret.id, nil, fmt.Errorf("failed to load environment secrets file \"%s\": %v", secret.path, err), secret.path}
+					results <- secretResult{secret.id, nil, fmt.Errorf("failed to load environment secrets file %q: %v", secret.path, err), secret.path}
 					continue
 				}
 				// All the nested map key should be string. Otherwise we get strange errors due to that
@@ -312,7 +312,7 @@ func (c *StateCreator) scatterGatherEnvSecretFiles(st *HelmState, envSecretFiles
 				// See https://github.com/roboll/helmfile/issues/677
 				vals, err := maputil.CastKeysToStrings(m)
 				if err != nil {
-					results <- secretResult{secret.id, nil, fmt.Errorf("failed to load environment secrets file \"%s\": %v", secret.path, err), secret.path}
+					results <- secretResult{secret.id, nil, fmt.Errorf("failed to load environment secrets file %q: %v", secret.path, err), secret.path}
 					continue
 				}
 				results <- secretResult{secret.id, vals, nil, secret.path}
@@ -332,7 +332,7 @@ func (c *StateCreator) scatterGatherEnvSecretFiles(st *HelmState, envSecretFiles
 					errs = append(errs, result.err)
 				} else {
 					if err := mergo.Merge(&envVals, &result.result, mergo.WithOverride, mergo.WithOverwriteWithEmptyValue); err != nil {
-						errs = append(errs, fmt.Errorf("failed to load environment secrets file \"%s\": %v", result.path, err))
+						errs = append(errs, fmt.Errorf("failed to load environment secrets file %q: %v", result.path, err))
 					}
 				}
 			}

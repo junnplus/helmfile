@@ -54,7 +54,7 @@ func TestIsLocalChart(t *testing.T) {
 		actual := isLocalChart(testcase.input)
 
 		if testcase.expected != actual {
-			t.Errorf("unexpected result: isLocalChart(\"%s\"): expected=%v, got=%v", testcase.input, testcase.expected, actual)
+			t.Errorf("unexpected result: isLocalChart(%q): expected=%v, got=%v", testcase.input, testcase.expected, actual)
 		}
 	}
 }
@@ -113,7 +113,7 @@ func TestResolveRemortChart(t *testing.T) {
 		repo, chart, actual := resolveRemoteChart(testcase.input)
 
 		if testcase.remote != actual {
-			t.Fatalf("unexpected result: reolveRemoteChart(\"%s\"): expected=%v, got=%v", testcase.input, testcase.remote, actual)
+			t.Fatalf("unexpected result: reolveRemoteChart(%q): expected=%v, got=%v", testcase.input, testcase.remote, actual)
 		}
 
 		if testcase.repo != repo {
@@ -147,7 +147,7 @@ func TestNormalizeChart(t *testing.T) {
 		actual := normalizeChart("/path/to", testcase.input)
 
 		if testcase.expected != actual {
-			t.Fatalf("unexpected result: normalizeChart(\"/path/to\", \"%s\"): expected=%v, got=%v", testcase.input, testcase.expected, actual)
+			t.Fatalf("unexpected result: normalizeChart(\"/path/to\", %q): expected=%v, got=%v", testcase.input, testcase.expected, actual)
 		}
 	}
 }

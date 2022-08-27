@@ -543,7 +543,7 @@ releases:
 				if err == nil {
 					t.Errorf("error expected but not happened for selector %s", testcase.label)
 				} else if err.Error() != testcase.errMsg {
-					t.Errorf("unexpected error message: expected=\"%s\", actual=\"%s\"", testcase.errMsg, err.Error())
+					t.Errorf("unexpected error message: expected=%q, actual=%q", testcase.errMsg, err.Error())
 				}
 			} else if !testcase.expectErr && err != nil {
 				t.Errorf("unexpected error for selector %s: %v", testcase.label, err)
@@ -784,7 +784,7 @@ func runFilterSubHelmFilesTests(testcases []struct {
 			if err == nil {
 				t.Errorf("[%s]error expected but not happened for selector %s", testName, testcase.label)
 			} else if err.Error() != testcase.errMsg {
-				t.Errorf("[%s]unexpected error message: expected=\"%s\", actual=\"%s\"", testName, testcase.errMsg, err.Error())
+				t.Errorf("[%s]unexpected error message: expected=%q, actual=%q", testName, testcase.errMsg, err.Error())
 			}
 		} else if !testcase.expectErr && err != nil {
 			t.Errorf("[%s]unexpected error for selector %s: %v", testName, testcase.label, err)
@@ -1323,7 +1323,7 @@ releases:
 	if err == nil {
 		t.Errorf("error expected but not happened")
 	} else if err.Error() != expected {
-		t.Errorf("unexpected error message: expected=\"%s\", actual=\"%s\"", expected, err.Error())
+		t.Errorf("unexpected error message: expected=%q, actual=%q", expected, err.Error())
 	}
 }
 
@@ -1454,7 +1454,7 @@ releases:
 	if err == nil {
 		t.Errorf("error expected but not happened")
 	} else if err.Error() != expected {
-		t.Errorf("unexpected error message: expected=\"%s\", actual=\"%s\"", expected, err.Error())
+		t.Errorf("unexpected error message: expected=%q, actual=%q", expected, err.Error())
 	}
 }
 
@@ -1500,7 +1500,7 @@ releases:
 	if err == nil {
 		t.Errorf("error expected but not happened")
 	} else if err.Error() != expected {
-		t.Errorf("unexpected error message: expected=\"%s\", actual=\"%s\"", expected, err.Error())
+		t.Errorf("unexpected error message: expected=%q, actual=%q", expected, err.Error())
 	}
 }
 

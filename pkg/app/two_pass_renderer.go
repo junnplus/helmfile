@@ -28,7 +28,7 @@ func (r *desiredStateLoader) renderPrestate(firstPassEnv *environment.Environmen
 	// parse as much as we can, tolerate errors, this is a preparse
 	yamlBuf, err := firstPassRenderer.RenderTemplateContentToBuffer(content)
 	if err != nil && r.logger != nil {
-		r.logger.Debugf("first-pass rendering input of \"%s\":\n%s", filename, prependLineNumbers(string(content)))
+		r.logger.Debugf("first-pass rendering input of %q:\n%s", filename, prependLineNumbers(string(content)))
 		r.logger.Debugf("template syntax error: %v", err)
 		if yamlBuf == nil { // we have a template syntax error, let the second parse report
 			return firstPassEnv, nil
@@ -36,7 +36,7 @@ func (r *desiredStateLoader) renderPrestate(firstPassEnv *environment.Environmen
 	}
 	yamlData := yamlBuf.String()
 	if r.logger != nil {
-		r.logger.Debugf("first-pass rendering output of \"%s\":\n%s", filename, prependLineNumbers(yamlData))
+		r.logger.Debugf("first-pass rendering output of %q:\n%s", filename, prependLineNumbers(yamlData))
 	}
 
 	// Work-around for https://github.com/golang/go/issues/24963
@@ -55,7 +55,7 @@ func (r *desiredStateLoader) renderPrestate(firstPassEnv *environment.Environmen
 		if _, ok := err.(*state.StateLoadError); ok {
 			r.logger.Debugf("could not deduce `environment:` block, configuring only .Environment.Name. error: %v", err)
 		}
-		r.logger.Debugf("error in first-pass rendering: result of \"%s\":\n%s", filename, prependLineNumbers(yamlBuf.String()))
+		r.logger.Debugf("error in first-pass rendering: result of %q:\n%s", filename, prependLineNumbers(yamlBuf.String()))
 	}
 
 	if prestate != nil {
@@ -81,7 +81,7 @@ func (r *desiredStateLoader) renderTemplatesToYamlWithEnv(baseDir, filename stri
 func (r *desiredStateLoader) twoPassRenderTemplateToYaml(inherited, overrode *environment.Environment, baseDir, filename string, content []byte) (*bytes.Buffer, error) {
 	// try a first pass render. This will always succeed, but can produce a limited env
 	if r.logger != nil {
-		r.logger.Debugf("first-pass rendering starting for \"%s\": inherited=%v, overrode=%v", filename, inherited, overrode)
+		r.logger.Debugf("first-pass rendering starting for %q: inherited=%v, overrode=%v", filename, inherited, overrode)
 	}
 
 	initEnv, err := inherited.Merge(overrode)
@@ -110,7 +110,7 @@ func (r *desiredStateLoader) twoPassRenderTemplateToYaml(inherited, overrode *en
 	}
 
 	if r.logger != nil {
-		r.logger.Debugf("first-pass rendering result of \"%s\": %v", filename, *finalEnv)
+		r.logger.Debugf("first-pass rendering result of %q: %v", filename, *finalEnv)
 	}
 
 	vals, err := finalEnv.GetMergedValues()
@@ -128,12 +128,12 @@ func (r *desiredStateLoader) twoPassRenderTemplateToYaml(inherited, overrode *en
 	yamlBuf, err := secondPassRenderer.RenderTemplateContentToBuffer(content)
 	if err != nil {
 		if r.logger != nil {
-			r.logger.Debugf("second-pass rendering failed, input of \"%s\":\n%s", filename, prependLineNumbers(string(content)))
+			r.logger.Debugf("second-pass rendering failed, input of %q:\n%s", filename, prependLineNumbers(string(content)))
 		}
 		return nil, err
 	}
 	if r.logger != nil {
-		r.logger.Debugf("second-pass rendering result of \"%s\":\n%s", filename, prependLineNumbers(yamlBuf.String()))
+		r.logger.Debugf("second-pass rendering result of %q:\n%s", filename, prependLineNumbers(yamlBuf.String()))
 	}
 	return yamlBuf, nil
 }

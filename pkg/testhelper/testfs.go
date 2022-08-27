@@ -154,5 +154,5 @@ func (f *TestFs) Chdir(dir string) error {
 		f.Cwd = dir
 		return nil
 	}
-	return fmt.Errorf("unexpected chdir \"%s\"", dir)
+	return fmt.Errorf("unexpected chdir %q", dir)
 }

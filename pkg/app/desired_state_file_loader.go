@@ -102,7 +102,7 @@ func (ld *desiredStateLoader) loadFile(inheritedEnv *environment.Environment, ba
 		return nil, fmt.Errorf("locate: %v", err)
 	}
 	if file != path {
-		ld.logger.Debugf("fetched remote \"%s\" to local cache \"%s\" and loading the latter...", file, path)
+		ld.logger.Debugf("fetched remote %q to local cache %q and loading the latter...", file, path)
 	}
 	file = path
 	return ld.loadFileWithOverrides(inheritedEnv, nil, baseDir, file, evaluateBases)

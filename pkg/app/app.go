@@ -612,21 +612,21 @@ func (a *App) within(dir string, do func() error) error {
 		return err
 	}
 
-	a.Logger.Debugf("changing working directory to \"%s\"", absDir)
+	a.Logger.Debugf("changing working directory to %q", absDir)
 
 	if err := a.fs.Chdir(absDir); err != nil {
-		return fmt.Errorf("failed changing working directory to \"%s\": %v", absDir, err)
+		return fmt.Errorf("failed changing working directory to %q: %v", absDir, err)
 	}
 
 	appErr := do()
 
-	a.Logger.Debugf("changing working directory back to \"%s\"", prev)
+	a.Logger.Debugf("changing working directory back to %q", prev)
 
 	if chdirBackErr := a.fs.Chdir(prev); chdirBackErr != nil {
 		if appErr != nil {
 			a.Logger.Warnf("%v", appErr)
 		}
-		return fmt.Errorf("failed chaging working directory back to \"%s\": %v", prev, chdirBackErr)
+		return fmt.Errorf("failed chaging working directory back to %q: %v", prev, chdirBackErr)
 	}
 
 	return appErr
@@ -649,7 +649,7 @@ func (a *App) visitStateFiles(fileOrDir string, opts LoadOpts, do func(string, s
 			dir = filepath.Dir(relPath)
 		}
 
-		a.Logger.Debugf("processing file \"%s\" in directory \"%s\"", file, dir)
+		a.Logger.Debugf("processing file %q in directory %q", file, dir)
 
 		absd, errAbsDir := a.fs.Abs(dir)
 		if errAbsDir != nil {
@@ -816,7 +816,7 @@ func (a *App) visitStates(fileOrDir string, defOpts LoadOpts, converge func(*sta
 
 		templated, tmplErr := st.ExecuteTemplates()
 		if tmplErr != nil {
-			return appError(fmt.Sprintf("failed executing release templates in \"%s\"", f), tmplErr)
+			return appError(fmt.Sprintf("failed executing release templates in %q", f), tmplErr)
 		}
 
 		processed, errs := converge(templated)
@@ -1037,7 +1037,7 @@ func checkDuplicates(helm helmexec.Interface, st *state.HelmState, releases []st
 				msg += fmt.Sprintf(" in kubecontext %q", name.KubeContext)
 			}
 
-			return fmt.Errorf("duplicate release %q found%s: there were %d releases named \"%s\" matching specified selector", name.Name, msg, c, name.Name)
+			return fmt.Errorf("duplicate release %q found%s: there were %d releases named %q matching specified selector", name.Name, msg, c, name.Name)
 		}
 	}
 
@@ -1066,7 +1066,7 @@ func (a *App) findDesiredStateFiles(specifiedPath string, opts LoadOpts) ([]stri
 		return nil, fmt.Errorf("locate: %v", err)
 	}
 	if specifiedPath != path {
-		a.Logger.Debugf("fetched remote \"%s\" to local cache \"%s\" and loading the latter...", specifiedPath, path)
+		a.Logger.Debugf("fetched remote %q to local cache %q and loading the latter...", specifiedPath, path)
 	}
 	specifiedPath = path
 
@@ -2007,7 +2007,7 @@ func (c context) wrapErrs(errs ...error) error {
 		for _, err := range errs {
 			switch e := err.(type) {
 			case *state.ReleaseError:
-				c.app.Logger.Debugf("err: release \"%s\" in \"%s\" failed: %v", e.Name, c.st.FilePath, e)
+				c.app.Logger.Debugf("err: release %q in %q failed: %v", e.Name, c.st.FilePath, e)
 			default:
 				c.app.Logger.Debugf("err: %v", e)
 			}

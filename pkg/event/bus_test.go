@@ -166,22 +166,22 @@ func TestTrigger(t *testing.T) {
 		ok, err := bus.Trigger(c.triggeredEvt, nil, data)
 
 		if ok != c.expectedResult {
-			t.Errorf("unexpected result for case \"%s\": expected=%v, actual=%v", c.name, c.expectedResult, ok)
+			t.Errorf("unexpected result for case %q: expected=%v, actual=%v", c.name, c.expectedResult, ok)
 		}
 
 		if c.expectedErr != "" {
 			if err == nil {
-				t.Errorf("error expected for case \"%s\", but not occurred", c.name)
+				t.Errorf("error expected for case %q, but not occurred", c.name)
 			} else if err.Error() != c.expectedErr {
-				t.Errorf("unexpected error for case \"%s\": expected=%s, actual=%v", c.name, c.expectedErr, err)
+				t.Errorf("unexpected error for case %q: expected=%s, actual=%v", c.name, c.expectedErr, err)
 			}
 		} else {
 			if err != nil {
-				t.Errorf("unexpected error for case \"%s\": %v", c.name, err)
+				t.Errorf("unexpected error for case %q: %v", c.name, err)
 			}
 		}
 		if observedLogs.Len() != 0 && !hooks[0].ShowLogs {
-			t.Errorf("unexpected error for case \"%s\": Logs should not be created : %v", c.name, observedLogs.All())
+			t.Errorf("unexpected error for case %q: Logs should not be created : %v", c.name, observedLogs.All())
 		}
 	}
 }

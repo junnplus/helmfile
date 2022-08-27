@@ -65,15 +65,15 @@ func (st *Storage) resolveFile(missingFileHandler *string, tpe, path string) ([]
 	if len(files) == 0 {
 		switch handlerId {
 		case MissingFileHandlerError:
-			return nil, false, fmt.Errorf("%s matching \"%s\" does not exist in \"%s\"", title, path, st.basePath)
+			return nil, false, fmt.Errorf("%s matching %q does not exist in %q", title, path, st.basePath)
 		case MissingFileHandlerWarn:
-			st.logger.Warnf("skipping missing %s matching \"%s\"", title, path)
+			st.logger.Warnf("skipping missing %s matching %q", title, path)
 			return nil, true, nil
 		case MissingFileHandlerInfo:
-			st.logger.Infof("skipping missing %s matching \"%s\"", title, path)
+			st.logger.Infof("skipping missing %s matching %q", title, path)
 			return nil, true, nil
 		case MissingFileHandlerDebug:
-			st.logger.Debugf("skipping missing %s matching \"%s\"", title, path)
+			st.logger.Debugf("skipping missing %s matching %q", title, path)
 			return nil, true, nil
 		default:
 			available := []string{
@@ -82,7 +82,7 @@ func (st *Storage) resolveFile(missingFileHandler *string, tpe, path string) ([]
 				MissingFileHandlerInfo,
 				MissingFileHandlerDebug,
 			}
-			return nil, false, fmt.Errorf("invalid missing file handler \"%s\" while processing \"%s\" in \"%s\": it must be one of %s", handlerId, path, st.FilePath, available)
+			return nil, false, fmt.Errorf("invalid missing file handler %q while processing %q in %q: it must be one of %s", handlerId, path, st.FilePath, available)
 		}
 	}
 
